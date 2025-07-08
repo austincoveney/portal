@@ -1,0 +1,1083 @@
+# DigiGrow Client Portal - Comprehensive Development Specification
+
+## Project Overview
+Build a production-ready, enterprise-grade client portal for DigiGrow, a UK-based digital marketing agency. This portal must meet industry security standards, provide seamless user experience, and maintain consistent DigiGrow branding throughout. The system enables agents to efficiently onboard businesses and provides clients with intuitive access to their digital marketing performance data.
+
+## Core Philosophy: Seamless & Easy-to-Use
+Every interaction must be intuitive, fast, and require minimal cognitive load. If a user needs to think about how to use something, it needs to be redesigned.
+
+## Tech Stack Requirements
+- **Frontend**: Next.js 14+ with TypeScript and App Router
+- **Backend**: Supabase (database, auth, real-time, edge functions)
+- **Styling**: Tailwind CSS with custom design system
+- **Analytics**: Plausible Analytics (embedded)
+- **Email**: Supabase Edge Functions with professional templates
+- **Deployment**: Hostinger servers (optimized static build)
+- **Security**: Enterprise-grade with SOC 2 Type II readiness
+
+## Brand Implementation Requirements
+
+### Brand Asset Organization
+```
+/src/assets/branding/
+  /logos/
+    - logo-primary.svg (navy + teal)
+    - logo-white.svg (white version)
+    - logo-dark.svg (navy only)
+    - logomark.svg (G icon only)
+    - favicon.ico
+  /colors/
+    - color-palette.json
+  /fonts/
+    - poppins/ (primary font files)
+    - funnel-display/ (secondary font files)
+  /patterns/
+    - background-pattern.svg
+    - icon-set.svg
+  /guidelines/
+    - brand-style-guide.pdf
+    - component-examples.md
+    - tone-of-voice.md
+```
+
+### Design System Implementation
+```typescript
+// tailwind.config.js - DigiGrow Theme
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        digigrow: {
+          navy: '#0B154F',
+          teal: '#00D692',
+          blue: '#2567FF',
+          purple: '#7C5FE3',
+          yellow: '#F5CF1B',
+          gray: {
+            50: '#F8F9FA',
+            100: '#F1F3F4',
+            200: '#E8EAED',
+            300: '#DADCE0',
+            400: '#BDC1C6',
+            500: '#9AA0A6',
+            600: '#80868B',
+            700: '#5F6368',
+            800: '#3C4043',
+            900: '#202124',
+          }
+        }
+      },
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'],
+        'funnel': ['Funnel Display', 'sans-serif'],
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.3s ease-in-out',
+        'slide-up': 'slideUp 0.4s ease-out',
+        'pulse-subtle': 'pulseSubtle 2s infinite',
+      }
+    }
+  }
+}
+
+// Component Branding Standards
+const brandComponents = {
+  buttons: {
+    primary: 'bg-digigrow-navy hover:bg-digigrow-navy/90 text-white',
+    secondary: 'bg-digigrow-teal hover:bg-digigrow-teal/90 text-white',
+    outline: 'border-digigrow-navy text-digigrow-navy hover:bg-digigrow-navy hover:text-white',
+  },
+  cards: {
+    default: 'bg-white border border-digigrow-gray-200 shadow-sm hover:shadow-md transition-shadow',
+    featured: 'bg-white border-l-4 border-l-digigrow-teal shadow-sm',
+  },
+  inputs: {
+    default: 'border-digigrow-gray-300 focus:border-digigrow-teal focus:ring-digigrow-teal/20',
+    error: 'border-red-300 focus:border-red-500 focus:ring-red-500/20',
+  }
+}
+```
+
+## Security Standards & Implementation
+
+### Industry-Standard Security Requirements
+```typescript
+// Password Policy (NIST 800-63B Compliant)
+const passwordPolicy = {
+  minLength: 12,
+  maxLength: 128,
+  requireSpecialChar: true,
+  requireNumber: true,
+  requireMixedCase: true,
+  preventCommonPasswords: true,
+  preventUserInfo: true,
+  breachDatabase: 'HaveIBeenPwned API integration',
+  rotationPolicy: 'Optional, user-driven',
+}
+
+// Session Management
+const sessionConfig = {
+  timeout: '30 minutes of inactivity',
+  rememberMeDuration: '30 days',
+  maxConcurrentSessions: 3,
+  deviceTracking: true,
+  suspiciousLocationAlert: true,
+}
+
+// Rate Limiting (per IP)
+const rateLimits = {
+  login: '5 attempts per 15 minutes',
+  registration: '3 attempts per hour',
+  api: '100 requests per minute',
+  passwordReset: '3 requests per hour',
+}
+```
+
+### Data Protection & GDPR Compliance
+```typescript
+// Data Classification
+const dataClassification = {
+  public: ['business name', 'industry', 'public website'],
+  internal: ['service preferences', 'agent assignments'],
+  confidential: ['email addresses', 'user names', 'usage analytics'],
+  restricted: ['passwords', 'session tokens', 'audit logs'],
+}
+
+// Data Retention Policy
+const dataRetention = {
+  activeUsers: 'Indefinite while account active',
+  deletedUsers: '30 days for account recovery',
+  auditLogs: '7 years for compliance',
+  sessionData: '30 days maximum',
+  analyticsData: '2 years',
+}
+
+// GDPR Rights Implementation
+const gdprRights = {
+  rightToAccess: 'Automated data export via dashboard',
+  rightToRectification: 'Self-service profile editing',
+  rightToErasure: 'Account deletion with data anonymization',
+  rightToPortability: 'JSON/CSV export functionality',
+  rightToRestrict: 'Account suspension without deletion',
+}
+```
+
+### Encryption & Security Measures
+```typescript
+// Encryption Standards
+const encryptionStandards = {
+  atRest: 'AES-256 (Supabase default)',
+  inTransit: 'TLS 1.3 minimum',
+  passwords: 'bcrypt with salt rounds 12+',
+  tokens: 'JWT with RS256 signing',
+  apiKeys: 'Encrypted storage with rotation',
+}
+
+// Security Headers
+const securityHeaders = {
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' plausible.io; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' *.supabase.co plausible.io",
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+}
+```
+
+## Complete User Flow & Authentication System
+
+### Authentication Architecture
+```typescript
+// Single Sign-In System - No Multiple Login Types
+interface AuthSystem {
+  method: 'email + password only';
+  twoFactor: 'Optional for primary clients, enforced for agents/admins';
+  magicLinks: 'Only for initial invitations';
+  socialAuth: 'None - maintain control and security';
+  rememberMe: 'Secure token-based, 30-day expiration';
+}
+
+// User Account Structure
+interface UserAccount {
+  id: string;
+  email: string; // Primary identifier
+  role: 'admin' | 'agent' | 'primary_client' | 'employee';
+  businessConnections: BusinessConnection[];
+  profile: UserProfile;
+  security: SecuritySettings;
+  preferences: UserPreferences;
+}
+
+// Business Account (Data Container Only)
+interface BusinessAccount {
+  id: string;
+  name: string;
+  industry: string;
+  activeServices: string[];
+  agentId: string;
+  settings: BusinessSettings;
+  connectedUsers: UserAccount[]; // References to user accounts
+  // This is NOT a login account - just data storage
+}
+```
+
+### Complete Workflow: Start to Finish
+
+#### Phase 1: Agent Creates Business Account
+```typescript
+// Route: /agent/dashboard/new-business
+const businessCreationFlow = {
+  step1: {
+    title: 'Business Information',
+    fields: [
+      'businessName', // Required, validation for uniqueness
+      'industry', // Dropdown: E-commerce, Construction, Professional Services, Other
+      'website', // URL validation, optional
+      'phoneNumber', // UK format validation
+      'address', // Full UK address with postcode validation
+      'employeeCount', // Range selector: 1-10, 11-50, 51-200, 200+
+      'description' // Optional, max 500 characters
+    ],
+    validation: 'Real-time with helpful error messages',
+    autosave: 'Draft saved every 30 seconds'
+  },
+  
+  step2: {
+    title: 'Service Selection',
+    layout: 'Card-based selection with descriptions',
+    services: [
+      {
+        name: 'Website Development',
+        description: 'Custom websites and optimization',
+        icon: 'WebsiteIcon',
+        defaultEnabled: true
+      },
+      {
+        name: 'SEO Services',
+        description: 'Search engine optimization and ranking',
+        icon: 'SEOIcon',
+        defaultEnabled: true
+      },
+      {
+        name: 'Marketing Automation',
+        description: 'Email campaigns and lead nurturing',
+        icon: 'AutomationIcon',
+        defaultEnabled: false
+      },
+      {
+        name: 'Digital Advertising',
+        description: 'Google Ads and social media advertising',
+        icon: 'AdsIcon',
+        defaultEnabled: false
+      },
+      {
+        name: 'Content Marketing',
+        description: 'Blog content and social media',
+        icon: 'ContentIcon',
+        defaultEnabled: false
+      },
+      {
+        name: 'Analytics & Reporting',
+        description: 'Performance tracking and insights',
+        icon: 'AnalyticsIcon',
+        defaultEnabled: true
+      }
+    ],
+    validation: 'At least one service must be selected'
+  },
+  
+  step3: {
+    title: 'Client Invitation Setup',
+    layout: 'Dynamic form with add/remove functionality',
+    fields: [
+      {
+        type: 'email',
+        label: 'Primary Client Email',
+        required: true,
+        validation: 'Email format + duplicate check',
+        description: 'This person will have full account access'
+      },
+      {
+        type: 'text',
+        label: 'Primary Client Name',
+        required: true,
+        placeholder: 'John Smith'
+      },
+      {
+        type: 'text',
+        label: 'Primary Client Role',
+        required: false,
+        placeholder: 'Managing Director'
+      },
+      {
+        type: 'repeater',
+        label: 'Additional Team Members',
+        fields: ['email', 'name', 'role'],
+        max: 10,
+        description: 'These users will be invited as employees'
+      }
+    ],
+    preview: 'Show invitation email template preview',
+    scheduling: 'Option to send immediately or schedule for later'
+  },
+  
+  completion: {
+    confirmation: 'Business account created successfully',
+    actions: [
+      'Send invitations now',
+      'Copy invitation links manually',
+      'Schedule invitations for later',
+      'View business profile'
+    ],
+    tracking: 'Invitation status dashboard for agent'
+  }
+}
+```
+
+#### Phase 2: Client Invitation & Onboarding
+```typescript
+// Email Invitation Template (Branded)
+const invitationEmail = {
+  subject: 'Welcome to DigiGrow - Your Digital Growth Journey Starts Here',
+  template: `
+    <DigiGrowEmailHeader />
+    
+    <h2>You've been invited to join DigiGrow</h2>
+    <p>{{agentName}} has set up your digital marketing dashboard.</p>
+    
+    <CallToActionButton 
+      href="{{invitationLink}}" 
+      text="Get Started"
+      style="primary"
+    />
+    
+    <BusinessPreview business="{{businessData}}" />
+    <AgentContact agent="{{agentData}}" />
+    
+    <Footer>
+      <p>This invitation expires in 7 days.</p>
+      <p>Need help? Contact {{agentName}} directly.</p>
+    </Footer>
+  `,
+  
+  security: {
+    tokenExpiry: '7 days',
+    singleUse: true,
+    signedTokens: true
+  }
+}
+
+// Client Onboarding Flow
+const clientOnboarding = {
+  step1: {
+    title: 'Welcome to DigiGrow',
+    content: 'Branded welcome screen with business context',
+    action: 'Continue to Account Setup'
+  },
+  
+  step2: {
+    title: 'Create Your Account',
+    fields: [
+      {
+        name: 'fullName',
+        label: 'Full Name',
+        type: 'text',
+        required: true,
+        prefilled: 'From invitation if provided'
+      },
+      {
+        name: 'jobTitle',
+        label: 'Job Title',
+        type: 'text',
+        required: false,
+        prefilled: 'From invitation if provided'
+      },
+      {
+        name: 'password',
+        label: 'Password',
+        type: 'password',
+        required: true,
+        validation: 'Real-time strength indicator',
+        requirements: passwordPolicy
+      },
+      {
+        name: 'confirmPassword',
+        label: 'Confirm Password',
+        type: 'password',
+        required: true,
+        validation: 'Match validation'
+      }
+    ],
+    security: {
+      passwordStrengthMeter: true,
+      breachCheck: 'HaveIBeenPwned API',
+      requirements: 'Clearly displayed'
+    }
+  },
+  
+  step3: {
+    title: 'Account Preferences',
+    fields: [
+      {
+        name: 'emailNotifications',
+        label: 'Email Notifications',
+        type: 'checkbox-group',
+        options: [
+          'Weekly performance reports',
+          'Monthly strategy updates',
+          'Important alerts',
+          'Agent messages'
+        ],
+        default: 'All enabled'
+      },
+      {
+        name: 'timezone',
+        label: 'Timezone',
+        type: 'select',
+        default: 'Europe/London',
+        required: true
+      },
+      {
+        name: 'twoFactorAuth',
+        label: 'Two-Factor Authentication',
+        type: 'toggle',
+        description: 'Recommended for enhanced security',
+        optional: true
+      }
+    ]
+  },
+  
+  step4: {
+    title: 'Welcome Tour',
+    type: 'Interactive guided tour',
+    highlights: [
+      'Your agent contact information',
+      'Service dashboards',
+      'How to contact support',
+      'Where to find reports'
+    ],
+    completion: 'Redirect to personalized dashboard'
+  }
+}
+```
+
+## Database Schema & Security Policies
+
+### Complete Supabase Schema
+```sql
+-- Enable Row Level Security and necessary extensions
+ALTER DEFAULT PRIVILEGES REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "citext";
+
+-- Users table (Core authentication and profile)
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  email CITEXT UNIQUE NOT NULL,
+  role TEXT CHECK (role IN ('admin', 'agent', 'primary_client', 'employee')) NOT NULL,
+  full_name TEXT NOT NULL,
+  job_title TEXT,
+  avatar_url TEXT,
+  phone TEXT,
+  timezone TEXT DEFAULT 'Europe/London',
+  
+  -- Security fields
+  two_factor_enabled BOOLEAN DEFAULT FALSE,
+  last_login_at TIMESTAMP WITH TIME ZONE,
+  last_login_ip INET,
+  failed_login_attempts INTEGER DEFAULT 0,
+  locked_until TIMESTAMP WITH TIME ZONE,
+  
+  -- Preferences
+  email_notifications JSONB DEFAULT '{"reports": true, "updates": true, "alerts": true, "messages": true}',
+  dashboard_preferences JSONB DEFAULT '{}',
+  
+  -- Audit fields
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  created_by UUID REFERENCES users(id),
+  
+  -- GDPR fields
+  gdpr_consent_at TIMESTAMP WITH TIME ZONE,
+  data_processing_consent BOOLEAN DEFAULT FALSE,
+  marketing_consent BOOLEAN DEFAULT FALSE
+);
+
+-- Businesses table (Data container, not user accounts)
+CREATE TABLE businesses (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL, -- URL-friendly identifier
+  industry TEXT NOT NULL,
+  description TEXT,
+  
+  -- Contact information
+  website_url TEXT,
+  phone TEXT,
+  email TEXT,
+  address JSONB, -- Structured address data
+  
+  -- Business details
+  employee_count_range TEXT CHECK (employee_count_range IN ('1-10', '11-50', '51-200', '200+')),
+  annual_revenue_range TEXT,
+  
+  -- Service configuration
+  active_services TEXT[] DEFAULT '{}',
+  service_settings JSONB DEFAULT '{}',
+  
+  -- Agent assignment
+  agent_id UUID REFERENCES users(id) NOT NULL,
+  
+  -- Analytics integration
+  plausible_domain TEXT,
+  analytics_settings JSONB DEFAULT '{}',
+  
+  -- Status and lifecycle
+  status TEXT CHECK (status IN ('active', 'inactive', 'suspended')) DEFAULT 'active',
+  onboarding_completed BOOLEAN DEFAULT FALSE,
+  
+  -- Audit fields
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  created_by UUID REFERENCES users(id)
+);
+
+-- User-Business connections (Many-to-many with permissions)
+CREATE TABLE user_business_connections (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  business_id UUID REFERENCES businesses(id) ON DELETE CASCADE,
+  
+  -- Role within this specific business
+  role TEXT CHECK (role IN ('primary_client', 'employee')) NOT NULL,
+  
+  -- Granular permissions
+  permissions JSONB DEFAULT '{
+    "view_all_services": true,
+    "view_specific_services": [],
+    "download_reports": true,
+    "contact_agent": true,
+    "manage_team": false,
+    "edit_business_profile": false
+  }',
+  
+  -- Status
+  status TEXT CHECK (status IN ('active', 'inactive', 'pending')) DEFAULT 'pending',
+  invited_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  accepted_at TIMESTAMP WITH TIME ZONE,
+  invited_by UUID REFERENCES users(id),
+  
+  -- Audit
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  
+  UNIQUE(user_id, business_id)
+);
+
+-- Invitations table (Secure token-based invitations)
+CREATE TABLE invitations (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  business_id UUID REFERENCES businesses(id) ON DELETE CASCADE,
+  email CITEXT NOT NULL,
+  role TEXT CHECK (role IN ('primary_client', 'employee')) NOT NULL,
+  permissions JSONB DEFAULT '{}',
+  
+  -- Invitation details
+  invited_by UUID REFERENCES users(id),
+  full_name TEXT, -- Pre-filled if provided
+  job_title TEXT, -- Pre-filled if provided
+  
+  -- Security
+  token TEXT UNIQUE NOT NULL DEFAULT encode(gen_random_bytes(32), 'base64url'),
+  expires_at TIMESTAMP WITH TIME ZONE DEFAULT (NOW() + INTERVAL '7 days'),
+  used_at TIMESTAMP WITH TIME ZONE,
+  
+  -- Status
+  status TEXT CHECK (status IN ('pending', 'accepted', 'expired', 'revoked')) DEFAULT 'pending',
+  
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Audit log table (Security and compliance)
+CREATE TABLE audit_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id),
+  business_id UUID REFERENCES businesses(id),
+  
+  -- Event details
+  event_type TEXT NOT NULL, -- 'login', 'logout', 'data_access', 'profile_update', etc.
+  event_category TEXT NOT NULL, -- 'auth', 'data', 'admin', etc.
+  description TEXT,
+  
+  -- Technical details
+  ip_address INET,
+  user_agent TEXT,
+  request_path TEXT,
+  
+  -- Additional context
+  metadata JSONB DEFAULT '{}',
+  
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Sessions table (Track active sessions)
+CREATE TABLE user_sessions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  
+  -- Session details
+  session_token TEXT UNIQUE NOT NULL,
+  device_info JSONB,
+  ip_address INET,
+  location_data JSONB,
+  
+  -- Security
+  is_remember_me BOOLEAN DEFAULT FALSE,
+  expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+  last_activity_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Row Level Security Policies
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE businesses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_business_connections ENABLE ROW LEVEL SECURITY;
+ALTER TABLE invitations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_sessions ENABLE ROW LEVEL SECURITY;
+
+-- Users can view/update their own profile
+CREATE POLICY "Users can manage their own profile" ON users
+  FOR ALL USING (auth.uid() = id);
+
+-- Agents can view users connected to their businesses
+CREATE POLICY "Agents can view their business users" ON users
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM businesses b 
+      WHERE b.agent_id = auth.uid() 
+      AND EXISTS (
+        SELECT 1 FROM user_business_connections ubc 
+        WHERE ubc.business_id = b.id AND ubc.user_id = users.id
+      )
+    )
+  );
+
+-- Business access policies
+CREATE POLICY "Users can view businesses they're connected to" ON businesses
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM user_business_connections ubc 
+      WHERE ubc.business_id = id 
+      AND ubc.user_id = auth.uid() 
+      AND ubc.status = 'active'
+    )
+    OR agent_id = auth.uid()
+  );
+
+-- Connection policies
+CREATE POLICY "Users can view their own connections" ON user_business_connections
+  FOR SELECT USING (user_id = auth.uid());
+
+-- Invitation policies
+CREATE POLICY "Users can view invitations sent to their email" ON invitations
+  FOR SELECT USING (email = auth.email());
+```
+
+### Supabase Edge Functions for Business Logic
+
+```typescript
+// /supabase/functions/send-invitation/index.ts
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+serve(async (req) => {
+  try {
+    const { businessId, invitations } = await req.json()
+    
+    // Validate agent permissions
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    )
+    
+    // Send branded email invitations
+    for (const invitation of invitations) {
+      const emailHtml = generateInvitationEmail(invitation)
+      
+      await sendEmail({
+        to: invitation.email,
+        subject: 'Welcome to DigiGrow - Your Digital Growth Journey Starts Here',
+        html: emailHtml
+      })
+      
+      // Log the invitation
+      await supabase.from('audit_logs').insert({
+        user_id: invitation.invited_by,
+        business_id: businessId,
+        event_type: 'invitation_sent',
+        event_category: 'auth',
+        description: `Invitation sent to ${invitation.email}`,
+        metadata: { invitation_id: invitation.id }
+      })
+    }
+    
+    return new Response(
+      JSON.stringify({ success: true }),
+      { headers: { "Content-Type": "application/json" } }
+    )
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    )
+  }
+})
+```
+
+## Dashboard Implementation
+
+### Client Dashboard Architecture
+```typescript
+// /src/app/dashboard/page.tsx
+const ClientDashboard = () => {
+  const { user, businessConnections } = useAuth()
+  const [selectedBusiness, setSelectedBusiness] = useState(businessConnections[0])
+  
+  return (
+    <DashboardLayout>
+      <Header user={user} business={selectedBusiness} />
+      
+      {businessConnections.length > 1 && (
+        <BusinessSelector 
+          businesses={businessConnections}
+          selected={selectedBusiness}
+          onChange={setSelectedBusiness}
+        />
+      )}
+      
+      <MainContent>
+        <AgentContactCard agent={selectedBusiness.agent} />
+        <ServiceTabs 
+          services={selectedBusiness.activeServices}
+          permissions={user.permissions}
+        />
+      </MainContent>
+      
+      <Footer />
+    </DashboardLayout>
+  )
+}
+
+// Agent Contact Card Component
+const AgentContactCard = ({ agent }) => {
+  return (
+    <Card className="mb-6 border-l-4 border-l-digigrow-teal">
+      <CardHeader className="pb-3">
+        <div className="flex items-center space-x-4">
+          <Avatar className="h-16 w-16">
+            <AvatarImage src={agent.avatar_url} alt={agent.full_name} />
+            <AvatarFallback className="bg-digigrow-navy text-white">
+              {agent.full_name.split(' ').map(n => n[0]).join('')}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <h3 className="text-lg font-semibold text-digigrow-navy">
+              {agent.full_name}
+            </h3>
+            <p className="text-digigrow-gray-600">Your DigiGrow Agent</p>
+          </div>
+        </div>
+      </CardHeader>
+      
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <Button 
+            variant="default" 
+            size="sm"
+            onClick={() => window.open(`mailto:${agent.email}?subject=DigiGrow Support Request`)}
+            className="bg-digigrow-navy hover:bg-digigrow-navy/90"
+          >
+            <Mail className="w-4 h-4 mr-2" />
+            Send Email
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => window.open(`tel:${agent.phone}`)}
+            className="border-digigrow-navy text-digigrow-navy hover:bg-digigrow-navy hover:text-white"
+          >
+            <Phone className="w-4 h-4 mr-2" />
+            Call Now
+          </Button>
+          
+          <Button 
+            variant="secondary" 
+            size="sm"
+            onClick={() => openBookingModal()}
+            className="bg-digigrow-teal hover:bg-digigrow-teal/90 text-white"
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            Book Meeting
+          </Button>
+        </div>
+        
+        <div className="mt-4 pt-4 border-t border-digigrow-gray-200">
+          <p className="text-sm text-digigrow-gray-600">
+            Need immediate help? 
+            <Button 
+              variant="link" 
+              size="sm"
+              onClick={() => window.open('/support', '_blank')}
+              className="text-digigrow-teal hover:text-digigrow-teal/80 p-0 ml-1"
+            >
+              Contact our support team
+            </Button>
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+### Service Tabs Implementation
+```typescript
+// Dynamic service tabs based on active services
+const ServiceTabs = ({ services, permissions }) => {
+  const [activeTab, setActiveTab] = useState(services[0])
+  
+  const serviceConfigs = {
+    'website': {
+      label: 'Website',
+      icon: Globe,
+      component: WebsiteTab,
+      requiredPermission: 'view_website'
+    },
+    'seo': {
+      label: 'SEO',
+      icon: TrendingUp,
+      component: SEOTab,
+      requiredPermission: 'view_seo'
+    },
+    'marketing': {
+      label: 'Marketing',
+      icon: Target,
+      component: MarketingTab,
+      requiredPermission: 'view_marketing'
+    },
+    'advertising': {
+      label: 'Advertising',
+      icon: Megaphone,
+      component: AdvertisingTab,
+      requiredPermission: 'view_advertising'
+    },
+    'analytics': {
+      label: 'Analytics',
+      icon: BarChart3,
+      component: AnalyticsTab,
+      requiredPermission: 'view_analytics'
+    }
+  }
+  
+  const visibleServices = services.filter(service => 
+    hasPermission(permissions, serviceConfigs[service].requiredPermission)
+  )
+  
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-digigrow-gray-200">
+      <div className="border-b border-digigrow-gray-200">
+        <nav className="flex space-x-8 px-6" aria-label="Service tabs">
+          {visibleServices.map((service) => {
+            const config = serviceConfigs[service]
+            const Icon = config.icon
+            const isActive = activeTab === service
+            
+            return (
+              <button
+                key={service}
+                onClick={() => setActiveTab(service)}
+                className={`
+                  py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2
+                  ${isActive 
+                    ? 'border-digigrow-teal text-digigrow-teal' 
+                    : 'border-transparent text-digigrow-gray-500 hover:text-digigrow-gray-700 hover:border-digigrow-gray-300'
+                  }
+                `}
+              >
+                <Icon className="w-4 h-4" />
+                <span>{config.label}</span>
+              </button>
+            )
+          })}
+        </nav>
+      </div>
+      
+      <div className="p-6">
+        {React.createElement(serviceConfigs[activeTab].component)}
+      </div>
+    </div>
+  )
+}
+```
+
+## Development Standards & Best Practices
+
+### Code Quality Requirements
+```typescript
+// TypeScript strict mode configuration
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true
+  }
+}
+
+// ESLint configuration for security and best practices
+{
+  "extends": [
+    "next/core-web-vitals",
+    "@typescript-eslint/recommended",
+    "plugin:security/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "rules": {
+    "no-console": "warn",
+    "no-debugger": "error",
+    "security/detect-object-injection": "error",
+    "security/detect-non-literal-regexp": "error"
+  }
+}
+```
+
+### Performance Requirements
+```typescript
+// Core Web Vitals targets
+const performanceTargets = {
+  LCP: '< 2.5 seconds', // Largest Contentful Paint
+  FID: '< 100 milliseconds', // First Input Delay
+  CLS: '< 0.1', // Cumulative Layout Shift
+  TTFB: '< 600 milliseconds', // Time to First Byte
+}
+
+// Optimization strategies
+const optimizations = [
+  'Next.js Image optimization for all images',
+  'Dynamic imports for service tab components',
+  'Supabase query optimization with proper indexing',
+  'CDN configuration for static assets',
+  'Service worker for offline functionality',
+  'Prefetching for critical navigation paths'
+]
+```
+
+### Testing Requirements
+```typescript
+// Testing strategy
+const testingStrategy = {
+  unit: 'Jest + React Testing Library for all components',
+  integration: 'Playwright for user flows',
+  security: 'OWASP ZAP security scanning',
+  performance: 'Lighthouse CI in GitHub Actions',
+  accessibility: 'axe-core integration',
+  e2e: 'Critical user journeys automated'
+}
+
+// Test coverage requirements
+const coverageTargets = {
+  statements: '90%',
+  branches: '85%',
+  functions: '90%',
+  lines: '90%'
+}
+```
+
+## Deployment & DevOps
+
+### Production Deployment Strategy
+```typescript
+// Environment configuration
+const environments = {
+  development: {
+    supabaseUrl: 'Local Supabase instance',
+    domain: 'localhost:3000',
+    analytics: 'disabled'
+  },
+  staging: {
+    supabaseUrl: 'Staging Supabase project',
+    domain: 'staging-portal.digigrow.com',
+    analytics: 'test mode'
+  },
+  production: {
+    supabaseUrl: 'Production Supabase project',
+    domain: 'portal.digigrow.com',
+    analytics: 'enabled'
+  }
+}
+
+// Build optimization for Hostinger
+const buildConfig = {
+  output: 'export', // Static export for Hostinger
+  trailingSlash: true,
+  images: {
+    unoptimized: true // Required for static export
+  },
+  env: {
+    CUSTOM_KEY: process.env.CUSTOM_KEY,
+  }
+}
+```
+
+### Monitoring & Alerting
+```typescript
+// Application monitoring
+const monitoring = {
+  errors: 'Sentry for error tracking and performance',
+  uptime: 'StatusPage integration',
+  performance: 'Core Web Vitals tracking',
+  security: 'Failed login attempt monitoring',
+  business: 'User journey completion rates'
+}
+
+// Alert configuration
+const alerts = {
+  criticalErrors: 'Immediate Slack notification',
+  performanceDegradation: '5-minute delay warning',
+  securityIncidents: 'Immediate email + SMS',
+  systemDowntime: 'Immediate multi-channel alert'
+}
+```
+
+## Success Criteria & KPIs
+
+### Technical Performance Metrics
+- **Page Load Time**: < 2 seconds on 3G connection
+- **First Contentful Paint**: < 1.5 seconds
+- **Error Rate**: < 0.1% of requests
+- **Uptime**: 99.9% availability
+- **Security Score**: A+ on Mozilla Observatory
+
+### User Experience Metrics
+- **Onboarding Completion**: > 95% of invited clients complete setup
+- **Time to Value**: Clients see their first analytics within 5 minutes
+- **Support Ticket Reduction**: 50% reduction in "how do I" questions
+- **User Satisfaction**: > 4.5/5 average rating
+- **Agent Efficiency**: 80% reduction in business setup time
+
+### Business Impact Metrics
+- **Client Engagement**: > 80% monthly active users
+- **Feature Adoption**: > 70% of clients use multiple service tabs
+- **Retention**: > 95% client retention through portal
+- **Agent Productivity**: 3x more businesses managed per agent
+- **Revenue Impact**: 25% increase in service upsells through portal visibility
+
+---
+
+**Build this as a flagship product that DigiGrow can be proud to show clients and competitors alike. Every detail should reflect the professional, innovative, and client-focused values of the DigiGrow brand. The codebase should be so clean and well-documented that any developer can understand and extend it immediately.**
+
+**Remember: If something feels complex or confusing during development, it probably is. Simplify ruthlessly while maintaining functionality. The best user experience is the one that feels effortless.**
