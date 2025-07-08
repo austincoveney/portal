@@ -37,11 +37,19 @@ This guide will walk you through setting up the Supabase database foundation for
 
 ### Step 2: Run the Database Schema
 
-1. Copy the entire contents of `schema.sql`
-2. Paste it into the SQL Editor
-3. Click **Run** to execute the script
+1. **Use the New Organized SQL Scripts**
+   ```bash
+   # All SQL scripts are now in: database/sql/
+   # See database/sql/README.md for detailed instructions
+   ```
 
-**What this script does:**
+2. **Quick Setup Process**
+   - Run `database/sql/reset.sql` (if you have existing data)
+   - Run `database/sql/main.sql` (creates all tables)
+   - Create user in Supabase dashboard
+   - Run `database/sql/admin-setup.sql` (promotes to admin)
+
+**What these scripts do:**
 - ✅ Safely drops existing tables/policies to prevent conflicts
 - ✅ Creates all necessary tables with proper relationships
 - ✅ Sets up Row Level Security (RLS) policies
