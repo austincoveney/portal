@@ -9,19 +9,61 @@ module.exports = {
     extend: {
       // DigiGrow Brand Colors
       colors: {
-        // Primary brand colors
+        // DigiGrow Primary Navy
+        'digigrow-navy': {
+          50: '#f0f4f8',
+          100: '#d9e2ec',
+          200: '#bcccdc',
+          300: '#9fb3c8',
+          400: '#829ab1',
+          500: '#627d98',
+          600: '#486581',
+          700: '#334e68',
+          800: '#243b53',
+          900: '#1B365D', // Main DigiGrow Navy
+          950: '#102a44',
+        },
+        // DigiGrow Teal Accent
+        'digigrow-teal': {
+          50: '#f0fdf9',
+          100: '#ccfbef',
+          200: '#99f6e0',
+          300: '#5eead4',
+          400: '#2dd4bf',
+          500: '#14b8a6',
+          600: '#0d9488',
+          700: '#0f766e',
+          800: '#115e59',
+          900: '#00D692', // Main DigiGrow Teal
+          950: '#042f2e',
+        },
+        // Primary brand colors (keeping for compatibility)
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9', // Main brand blue
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
+          50: '#f0f4f8',
+          100: '#d9e2ec',
+          200: '#bcccdc',
+          300: '#9fb3c8',
+          400: '#829ab1',
+          500: '#1B365D', // DigiGrow Navy
+          600: '#486581',
+          700: '#334e68',
+          800: '#243b53',
+          900: '#1B365D',
+          950: '#102a44',
+        },
+        // Accent colors
+        accent: {
+          50: '#f0fdf9',
+          100: '#ccfbef',
+          200: '#99f6e0',
+          300: '#5eead4',
+          400: '#2dd4bf',
+          500: '#00D692', // DigiGrow Teal
+          600: '#0d9488',
+          700: '#0f766e',
+          800: '#115e59',
+          900: '#00D692',
+          950: '#042f2e',
         },
         // Secondary colors
         secondary: {
@@ -103,14 +145,32 @@ module.exports = {
       // Animation and transitions
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
+        'fade-in-up': 'fadeInUp 0.6s ease-out',
+        'fade-in-down': 'fadeInDown 0.6s ease-out',
         'slide-up': 'slideUp 0.3s ease-out',
         'slide-down': 'slideDown 0.3s ease-out',
+        'slide-in-left': 'slideInLeft 0.4s ease-out',
+        'slide-in-right': 'slideInRight 0.4s ease-out',
+        'scale-in': 'scaleIn 0.3s ease-out',
+        'bounce-gentle': 'bounceGentle 0.6s ease-out',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-teal': 'pulseTeal 2s ease-in-out infinite',
+        'shimmer': 'shimmer 2s linear infinite',
+        'float': 'float 3s ease-in-out infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeInDown: {
+          '0%': { opacity: '0', transform: 'translateY(-30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         slideUp: {
           '0%': { transform: 'translateY(10px)', opacity: '0' },
@@ -119,6 +179,40 @@ module.exports = {
         slideDown: {
           '0%': { transform: 'translateY(-10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideInLeft: {
+          '0%': { transform: 'translateX(-30px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideInRight: {
+          '0%': { transform: 'translateX(30px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.9)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        bounceGentle: {
+          '0%, 20%, 53%, 80%, 100%': { transform: 'translate3d(0,0,0)' },
+          '40%, 43%': { transform: 'translate3d(0, -8px, 0)' },
+          '70%': { transform: 'translate3d(0, -4px, 0)' },
+          '90%': { transform: 'translate3d(0, -2px, 0)' },
+        },
+        pulseTeal: {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(0, 214, 146, 0.7)' },
+          '70%': { boxShadow: '0 0 0 10px rgba(0, 214, 146, 0)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        glow: {
+          '0%': { boxShadow: '0 0 5px rgba(0, 214, 146, 0.5)' },
+          '100%': { boxShadow: '0 0 20px rgba(0, 214, 146, 0.8), 0 0 30px rgba(0, 214, 146, 0.6)' },
         },
       },
       // Custom screens for responsive design

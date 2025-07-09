@@ -16,37 +16,63 @@ DROP POLICY IF EXISTS "Users can update own profile" ON public.users;
 DROP POLICY IF EXISTS "Admins can view all users" ON public.users;
 DROP POLICY IF EXISTS "Admins can manage users" ON public.users;
 DROP POLICY IF EXISTS "Users can view connected businesses" ON public.businesses;
+DROP POLICY IF EXISTS "Business owners can update their businesses" ON public.businesses;
 DROP POLICY IF EXISTS "Admins can view all businesses" ON public.businesses;
+DROP POLICY IF EXISTS "Admins can manage all businesses" ON public.businesses;
 DROP POLICY IF EXISTS "Users can view own connections" ON public.user_business_connections;
+DROP POLICY IF EXISTS "Business managers can view business connections" ON public.user_business_connections;
 DROP POLICY IF EXISTS "Admins can view all connections" ON public.user_business_connections;
+DROP POLICY IF EXISTS "Admins can manage all connections" ON public.user_business_connections;
 DROP POLICY IF EXISTS "Users can view invitations they sent" ON public.invitations;
+DROP POLICY IF EXISTS "Business managers can send invitations" ON public.invitations;
 DROP POLICY IF EXISTS "Admins can view all invitations" ON public.invitations;
+DROP POLICY IF EXISTS "Admins can manage all invitations" ON public.invitations;
+DROP POLICY IF EXISTS "Users can view their own email logs" ON public.email_delivery_logs;
+DROP POLICY IF EXISTS "Admins can view all email logs" ON public.email_delivery_logs;
 DROP POLICY IF EXISTS "Users can view own audit logs" ON public.audit_logs;
 DROP POLICY IF EXISTS "Admins can view all audit logs" ON public.audit_logs;
 DROP POLICY IF EXISTS "Users can view own sessions" ON public.user_sessions;
+DROP POLICY IF EXISTS "Users can manage own sessions" ON public.user_sessions;
 DROP POLICY IF EXISTS "Admins can view all sessions" ON public.user_sessions;
 
 -- Drop all triggers
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+DROP TRIGGER IF EXISTS on_auth_user_created_simple ON auth.users;
+DROP TRIGGER IF EXISTS on_auth_user_created_enhanced ON auth.users;
 DROP TRIGGER IF EXISTS update_users_updated_at ON public.users;
 DROP TRIGGER IF EXISTS update_businesses_updated_at ON public.businesses;
 DROP TRIGGER IF EXISTS update_user_business_connections_updated_at ON public.user_business_connections;
 DROP TRIGGER IF EXISTS update_invitations_updated_at ON public.invitations;
+DROP TRIGGER IF EXISTS update_email_delivery_logs_updated_at ON public.email_delivery_logs;
 DROP TRIGGER IF EXISTS update_user_sessions_updated_at ON public.user_sessions;
 
 -- Drop all functions
 DROP FUNCTION IF EXISTS public.handle_new_user() CASCADE;
+DROP FUNCTION IF EXISTS public.handle_new_user_enhanced() CASCADE;
+DROP FUNCTION IF EXISTS public.ensure_user_business_connection_enhanced(UUID) CASCADE;
+DROP FUNCTION IF EXISTS public.log_email_sent(UUID, UUID, email_type, TEXT, email_provider, JSONB) CASCADE;
+DROP FUNCTION IF EXISTS public.update_email_status(UUID, email_status, TEXT) CASCADE;
+DROP FUNCTION IF EXISTS public.get_email_delivery_rate(email_type, email_provider, INTEGER) CASCADE;
+DROP FUNCTION IF EXISTS public.cleanup_old_email_logs(INTEGER) CASCADE;
 DROP FUNCTION IF EXISTS public.update_updated_at_column() CASCADE;
+
+-- Drop all views
+DROP VIEW IF EXISTS public.email_delivery_stats CASCADE;
+DROP VIEW IF EXISTS public.recent_email_activity CASCADE;
 
 -- Drop all tables (in reverse dependency order)
 DROP TABLE IF EXISTS public.user_sessions CASCADE;
 DROP TABLE IF EXISTS public.audit_logs CASCADE;
+DROP TABLE IF EXISTS public.email_delivery_logs CASCADE;
 DROP TABLE IF EXISTS public.invitations CASCADE;
 DROP TABLE IF EXISTS public.user_business_connections CASCADE;
 DROP TABLE IF EXISTS public.businesses CASCADE;
 DROP TABLE IF EXISTS public.users CASCADE;
 
 -- Drop all custom types
+DROP TYPE IF EXISTS email_type CASCADE;
+DROP TYPE IF EXISTS email_provider CASCADE;
+DROP TYPE IF EXISTS email_status CASCADE;
 DROP TYPE IF EXISTS audit_event_type CASCADE;
 DROP TYPE IF EXISTS invitation_status CASCADE;
 DROP TYPE IF EXISTS user_role CASCADE;

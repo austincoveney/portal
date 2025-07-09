@@ -2,11 +2,14 @@
 
 This folder contains all SQL scripts for the DigiGrow Client Portal database setup and management.
 
-## File Structure
+## Available SQL Files
+
+### Core Setup Files
 
 - **`reset.sql`** - Completely resets the database (deletes everything)
 - **`main.sql`** - Main database setup (creates all tables, policies, etc.)
 - **`admin-setup.sql`** - Promotes a user to admin role
+- **`optimize_auth_and_email.sql`** - Enhanced authentication flow and email delivery tracking system
 
 ## Setup Process
 
@@ -38,6 +41,22 @@ This folder contains all SQL scripts for the DigiGrow Client Portal database set
    - Go to: `http://localhost:3001`
    - Sign in with your admin credentials
 
+### 3. Enhanced Features (optional)
+
+1. **Reset Database** (if needed): `reset.sql`
+2. **Create Core Schema**: `main.sql`
+3. **Setup Admin User**: `admin-setup.sql`
+4. **Add Email Tracking**: `optimize_auth_and_email.sql`
+
+## Enhanced Features
+
+The `optimize_auth_and_email.sql` script adds:
+- Email delivery tracking and logging
+- Enhanced user creation functions
+- Performance optimization indexes
+- Email analytics and monitoring views
+- Automated cleanup utilities
+
 ## Key Features
 
 ✅ **Simple & Clean** - No complex triggers or functions that can cause errors
@@ -64,9 +83,23 @@ This folder contains all SQL scripts for the DigiGrow Client Portal database set
 
 ## Troubleshooting
 
+### Common Issues
+
+**"Your Role: User" instead of proper role:**
+- Ensure user profile exists in `public.users` table
+- Check user_business_connections for proper role assignment
+
+**"No businesses connected" message:**
+- Verify businesses exist in the `businesses` table
+- Check user_business_connections table for proper links
+
+**"Failed to load user profile" error:**
+- User exists in `auth.users` but not in `public.users`
+- The enhanced auth flow should handle this automatically
+
 **"Database error saving new user"**
-- The main.sql setup doesn't use triggers, so this shouldn't happen
-- If it does, run reset.sql then main.sql again
+- Check Supabase logs for specific error details
+- Verify RLS policies are properly configured
 
 **Admin promotion not working**
 - Check the email address in admin-setup.sql matches exactly
@@ -77,3 +110,10 @@ This folder contains all SQL scripts for the DigiGrow Client Portal database set
 - Run reset.sql (WARNING: deletes all data)
 - Then run main.sql
 - Then create admin user and run admin-setup.sql
+- Optionally run optimize_auth_and_email.sql for enhanced features
+
+**General troubleshooting steps:**
+1. Check Supabase logs in the dashboard
+2. Verify RLS policies are correctly applied
+3. Ensure all tables exist with proper permissions
+4. Use the email delivery logs for debugging email issues

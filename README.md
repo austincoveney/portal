@@ -73,9 +73,14 @@ cp .env.example .env.local
 
 1. Open your Supabase project dashboard
 2. Go to SQL Editor
-3. Copy the contents of `database/schema.sql`
-4. Paste and execute in the SQL Editor
-5. Verify all tables are created successfully
+3. Run the SQL files in this order:
+   - `database/sql/reset.sql` (if needed)
+   - `database/sql/main.sql` (core schema)
+   - `database/sql/admin-setup.sql` (admin user)
+   - `database/sql/setup_missing_tables.sql` (dashboard fixes)
+4. Verify all tables are created successfully
+
+For detailed instructions, see: `docs/DASHBOARD_COMPLETE_GUIDE.md`
 
 ### 4. Run Development Server
 
@@ -91,21 +96,38 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```
 portal/
-├── database/
-│   ├── schema.sql              # Complete database schema
-│   ├── supabase-config.js      # Supabase configuration
-│   └── SETUP_GUIDE.md          # Detailed setup instructions
+├── docs/                       # 📚 All project documentation
+│   ├── README.md              # Documentation index
+│   ├── DASHBOARD_COMPLETE_GUIDE.md  # Master dashboard setup guide
+│   ├── DASHBOARD_FIX_INSTRUCTIONS.md # Previous fix instructions
+│   ├── FINAL_DASHBOARD_FIX.md # RLS policy fixes
+│   └── monitor_demo.md        # Monitoring demo
+├── database/                   # 🗄️ Database files
+│   ├── sql/                   # All SQL files organized
+│   │   ├── README.md          # SQL files documentation
+│   │   ├── main.sql           # Core database schema
+│   │   ├── admin-setup.sql    # Admin user setup
+│   │   ├── reset.sql          # Database reset script
+│   │   ├── setup_missing_tables.sql # Dashboard fix script
+│   │   ├── fix_rls_policies.sql     # RLS policy fixes
+│   │   ├── force_cleanup_rls.sql    # RLS cleanup
+│   │   └── add_email_column.sql     # Email column addition
+│   ├── monitoring/            # PowerShell monitoring scripts
+│   ├── ADMIN_SETUP.md         # Admin setup guide
+│   ├── SECURITY_CHECKLIST.md  # Security guidelines
+│   ├── SETUP_GUIDE.md         # Database setup guide
+│   └── supabase-config.js     # Supabase configuration
 ├── src/
-│   ├── components/             # Reusable UI components
-│   ├── pages/                  # Next.js pages
-│   ├── lib/                    # Utility functions and configs
-│   ├── hooks/                  # Custom React hooks
-│   ├── types/                  # TypeScript type definitions
-│   └── styles/                 # Global styles
-├── public/                     # Static assets
-├── .env.example               # Environment template
-├── .gitignore                 # Git ignore rules
-└── README.md                  # This file
+│   ├── components/            # Reusable UI components
+│   ├── pages/                 # Next.js pages
+│   ├── lib/                   # Utility functions and configs
+│   ├── types/                 # TypeScript type definitions
+│   └── styles/                # Global styles
+├── public/                    # Static assets
+├── Resorses/                  # Project resources
+├── .env.example              # Environment template
+├── .gitignore                # Git ignore rules
+└── README.md                 # This file
 ```
 
 ## 🔐 User Roles & Permissions
@@ -203,7 +225,9 @@ portal/
 
 - [Supabase Documentation](https://supabase.com/docs)
 - [Next.js Documentation](https://nextjs.org/docs)
+- [Complete Dashboard Guide](./docs/DASHBOARD_COMPLETE_GUIDE.md)
 - [Database Setup Guide](./database/SETUP_GUIDE.md)
+- [All Documentation](./docs/README.md)
 
 ## 🤝 Contributing
 

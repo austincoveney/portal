@@ -4,7 +4,7 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
-import type { Database } from '@/types/database.types';
+import type { Database } from '@/shared/types/database.types';
 
 export default function Home() {
   const router = useRouter();
@@ -81,33 +81,47 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-[#0B154F] via-[#0B154F] to-[#1a2b6b] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="min-h-screen bg-gradient-to-br from-digigrow-navy-900 via-digigrow-navy-800 to-digigrow-navy-700 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-digigrow-teal-500/10 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-digigrow-teal-400/10 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-digigrow-teal-300/5 rounded-full blur-3xl animate-pulse-slow"></div>
+        </div>
+
+        <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
           {/* DigiGrow Logo */}
-          <div className="flex justify-center mb-8">
-            <div className="w-64 h-16 relative">
+          <div className="flex justify-center mb-8 animate-fade-in-down">
+            <div className="w-72 h-20 relative p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-2xl">
               <Image 
                 src="/digigrow-logo.svg" 
                 alt="DigiGrow" 
-                width={256}
-                height={64}
-                className="object-contain"
+                width={288}
+                height={80}
+                className="object-contain filter brightness-0 invert"
                 priority
               />
             </div>
           </div>
           
           {/* Header */}
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
-            Client Portal
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-300">
-            Secure access for DigiGrow clients and staff
-          </p>
+          <div className="text-center animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+            <h2 className="text-4xl font-bold tracking-tight text-white mb-3">
+              🚀 Client Portal
+            </h2>
+            <p className="text-lg text-digigrow-teal-200 font-medium">
+              Secure access for DigiGrow clients and staff
+            </p>
+            <div className="mt-4 flex items-center justify-center space-x-2">
+              <div className="w-2 h-2 bg-digigrow-teal-400 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-digigrow-teal-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
+              <div className="w-2 h-2 bg-digigrow-teal-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white/95 backdrop-blur-sm py-8 px-4 shadow-2xl sm:rounded-xl sm:px-10 border border-white/20">
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+          <div className="bg-white/95 backdrop-blur-sm py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-white/20 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
             <form onSubmit={handleSignIn} className="space-y-6">
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
@@ -127,8 +141,8 @@ export default function Home() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00D692] focus:border-[#00D692] transition-colors duration-200 text-gray-900 placeholder-gray-500"
-                  placeholder="Enter your email"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-digigrow-teal-500 focus:border-digigrow-teal-500 transition-all duration-300 text-gray-900 placeholder-gray-500 hover:border-digigrow-teal-300 shadow-sm focus:shadow-lg"
+                  placeholder="✉️ Enter your email"
                 />
               </div>
 
@@ -144,8 +158,8 @@ export default function Home() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00D692] focus:border-[#00D692] transition-colors duration-200 text-gray-900 placeholder-gray-500"
-                  placeholder="Enter your password"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-digigrow-teal-500 focus:border-digigrow-teal-500 transition-all duration-300 text-gray-900 placeholder-gray-500 hover:border-digigrow-teal-300 shadow-sm focus:shadow-lg"
+                  placeholder="🔒 Enter your password"
                 />
               </div>
 
@@ -153,7 +167,7 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={isSigningIn || !email || !password}
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#00D692] to-[#00B87A] hover:from-[#00B87A] hover:to-[#009966] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00D692] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-semibold text-white bg-gradient-to-r from-digigrow-teal-500 to-digigrow-teal-600 hover:from-digigrow-teal-600 hover:to-digigrow-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-digigrow-teal-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95"
                 >
                   {isSigningIn ? (
                     <div className="flex items-center">
@@ -174,26 +188,32 @@ export default function Home() {
         </div>
 
         {/* Support Info */}
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="text-center">
-            <p className="text-xs text-gray-300">
-              Need help accessing your account?
-            </p>
-            <div className="mt-2 space-y-1">
-              <p className="text-xs">
-                <a href="mailto:support@digigrow.uk" className="text-[#00D692] hover:text-[#00B87A] transition-colors duration-200">
-                  support@digigrow.uk
-                </a>
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+          <div className="text-center animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-lg">
+              <p className="text-sm text-digigrow-teal-200 font-medium mb-4">
+                💬 Need help accessing your account?
               </p>
-              <p className="text-xs">
-                <a href="tel:03300432952" className="text-[#00D692] hover:text-[#00B87A] transition-colors duration-200">
-                  03300 432 952
-                </a>
-              </p>
+              <div className="space-y-3">
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="text-xs text-white">📧</span>
+                  <a href="mailto:support@digigrow.uk" className="text-digigrow-teal-300 hover:text-digigrow-teal-200 transition-colors duration-300 text-sm font-medium hover:underline">
+                    support@digigrow.uk
+                  </a>
+                </div>
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="text-xs text-white">📞</span>
+                  <a href="tel:03300432952" className="text-digigrow-teal-300 hover:text-digigrow-teal-200 transition-colors duration-300 text-sm font-medium hover:underline">
+                    03300 432 952
+                  </a>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/20">
+                <p className="text-xs text-gray-300">
+                  🔐 Accounts are created by DigiGrow staff only
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-gray-400 mt-3">
-              Accounts are created by DigiGrow staff only
-            </p>
           </div>
         </div>
       </div>

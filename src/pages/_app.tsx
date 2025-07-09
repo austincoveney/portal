@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { Toaster } from 'react-hot-toast';
-import type { Database } from '@/types/database.types';
+import type { Database } from '@/shared/types/database.types';
 import '@/styles/globals.css';
 
 // Create a single supabase client for interacting with your database

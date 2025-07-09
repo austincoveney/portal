@@ -22,7 +22,7 @@ const nextConfig = {
 
   // Environment variables that should be exposed to the browser
   env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
+    CUSTOM_KEY: process.env.CUSTOM_KEY || '',
   },
 
   // Image optimization configuration
@@ -66,18 +66,13 @@ const nextConfig = {
   // Redirects for better UX
   async redirects() {
     return [
-      {
-        source: '/dashboard',
-        destination: '/dashboard/overview',
-        permanent: false,
-      },
+      // No redirects needed - dashboard/index.tsx handles the main dashboard
     ];
   },
 
   // Experimental features
   experimental: {
-    // Enable app directory (Next.js 13+ feature)
-    appDir: false, // Set to true when ready to migrate to app directory
+    // App directory is now stable in Next.js 14, no longer experimental
   },
 
   // Webpack configuration for custom optimizations
