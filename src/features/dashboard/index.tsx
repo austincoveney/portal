@@ -412,14 +412,14 @@ export default function Dashboard() {
                           </div>
                           <div className="flex items-center space-x-3">
                             <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
-                              business.is_active
+                              business.status === 'active'
                                 ? 'bg-success-100 text-success-800 group-hover:bg-success-200'
                                 : 'bg-gray-100 text-gray-800 group-hover:bg-gray-200'
                             }`}>
                               <div className={`w-2 h-2 rounded-full mr-2 ${
-                                business.is_active ? 'bg-success-500' : 'bg-gray-500'
+                                business.status === 'active' ? 'bg-success-500' : 'bg-gray-500'
                               }`}></div>
-                              {business.is_active ? 'Active' : 'Inactive'}
+                              {business.status === 'active' ? 'Active' : 'Inactive'}
                             </span>
                             <div className="w-8 h-8 bg-digigrow-navy-100 rounded-lg flex items-center justify-center group-hover:bg-digigrow-teal-100 transition-colors duration-300">
                               <BuildingOfficeIcon className="w-4 h-4 text-digigrow-navy-600 group-hover:text-digigrow-teal-600" />
@@ -459,7 +459,7 @@ export default function Dashboard() {
                       ) : (
                         <button
                           type="button"
-                          onClick={() => toast.info('Please contact your DigiGrow agent for business setup')}
+                          onClick={() => toast('Please contact your DigiGrow agent for business setup')}
                           className="inline-flex items-center px-6 py-3 border border-transparent shadow-medium text-base font-medium rounded-xl text-white bg-gradient-to-r from-digigrow-navy-600 to-digigrow-navy-700 hover:from-digigrow-navy-700 hover:to-digigrow-navy-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-digigrow-navy-500 transition-all duration-300 hover:shadow-large hover:-translate-y-0.5"
                         >
                           💬 Contact Support

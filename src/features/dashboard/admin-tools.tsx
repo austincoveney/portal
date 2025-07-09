@@ -5,12 +5,10 @@ import Head from 'next/head';
 import toast from 'react-hot-toast';
 import {
   BuildingOfficeIcon,
-  UserPlusIcon,
   PlusIcon,
   EnvelopeIcon,
   CogIcon,
   ArrowRightOnRectangleIcon,
-  UsersIcon,
   ChevronDownIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline';
@@ -36,7 +34,7 @@ export default function AdminTools() {
   });
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(1);
-  const [selectedBusinessId, setSelectedBusinessId] = useState<string>('');
+
 
   // Form states
   const [businessForm, setBusinessForm] = useState({
@@ -327,14 +325,14 @@ export default function AdminTools() {
                           <div className="flex items-center space-x-3">
                             <div className="text-center">
                               <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
-                                business.is_active
+                                business.status === 'active'
                                   ? 'bg-success-100 text-success-800 group-hover:bg-success-200'
                                   : 'bg-gray-100 text-gray-800 group-hover:bg-gray-200'
                               }`}>
                                 <div className={`w-2 h-2 rounded-full mr-2 ${
-                                  business.is_active ? 'bg-success-500' : 'bg-gray-500'
+                                  business.status === 'active' ? 'bg-success-500' : 'bg-gray-500'
                                 }`}></div>
-                                {business.is_active ? 'Active' : 'Inactive'}
+                                {business.status === 'active' ? 'Active' : 'Inactive'}
                               </span>
                               <div className="text-xs text-digigrow-navy-500 mt-1 bg-digigrow-navy-100 px-2 py-1 rounded-full">
                                 ✅ Setup Complete
@@ -557,12 +555,14 @@ export default function AdminTools() {
                     .from('businesses')
                     .insert({
                       name: businessForm.name,
+                      slug: slug,
                       industry: businessForm.industry,
                       description: businessForm.description || null,
-                      website: businessForm.website_url || null,
+                      website_url: businessForm.website_url || null,
                       phone: businessForm.phone || null,
                       email: businessForm.email || null,
-                      is_active: true
+                      agent_id: user?.id || '',
+                      status: 'active'
                     })
                     .select()
                     .single();

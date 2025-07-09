@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UserIcon, CameraIcon } from '@heroicons/react/24/outline';
+import { CameraIcon } from '@heroicons/react/24/outline';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import toast from 'react-hot-toast';
 import type { Database } from '@/shared/types/database.types';
@@ -58,6 +58,10 @@ export default function ProfileAvatar({
       }
 
       const file = event.target.files[0];
+      
+      if (!file) {
+        throw new Error('No file selected');
+      }
       
       // Validate file size (max 20MB)
       if (file.size > 20 * 1024 * 1024) {

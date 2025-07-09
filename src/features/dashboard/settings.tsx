@@ -9,7 +9,6 @@ import {
   EnvelopeIcon,
   PhoneIcon,
   BriefcaseIcon,
-  KeyIcon,
   ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import type { Database } from '@/shared/types/database.types';
@@ -58,7 +57,7 @@ export default function Settings() {
       setUserProfile(profile);
       setFormData({
         full_name: profile.full_name || '',
-        email: profile.email || '',
+        email: user?.email || '',
         phone: profile.phone || '',
         job_title: profile.job_title || '',
       });

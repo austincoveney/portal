@@ -22,8 +22,7 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Get the current URL hash and search params
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        // Get the current URL search params
         const searchParams = new URLSearchParams(window.location.search);
         
         // Check for token hash (PKCE flow)
@@ -32,7 +31,7 @@ export default function AuthCallback() {
         
         if (tokenHash && type) {
           // PKCE flow - verify the token hash
-          const { data, error } = await supabase.auth.verifyOtp({
+          const { error } = await supabase.auth.verifyOtp({
             token_hash: tokenHash,
             type: type as any
           });
